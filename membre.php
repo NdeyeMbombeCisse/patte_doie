@@ -72,25 +72,23 @@ public function setstatut($new_statut){
 
 // methode pour ajouter des membres
 
-
-public function add($prenom,$nom,$situation_matrimoniale,$sexe,$statut,$id_age){
+public function add($prenom, $nom, $situation_matrimoniale, $sexe, $statut, $id_age) {
     try {
-        $sql = "INSERT INTO membre (prenom, nom, situation_matrimoniale, sexe,  statut, id_age) VALUES (  :prenom, :nom,  :situation_matrimoniale, :sexe, :statut, :id_age)";
+        $sql = "INSERT INTO membre (prenom, nom, situation_matrimoniale, sexe, statut, id_age) VALUES (:prenom, :nom, :situation_matrimoniale, :sexe, :statut, :id_age)";
         $stmt = $this->connexion->prepare($sql);
         $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
         $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
         $stmt->bindParam(':situation_matrimoniale', $situation_matrimoniale, PDO::PARAM_STR);
         $stmt->bindParam(':sexe', $sexe, PDO::PARAM_STR);
         $stmt->bindParam(':statut', $statut, PDO::PARAM_STR);
-        $stmt->bindParam(':id_age', $id_age, PDO::PARAM_STR);
-        $resultats = $stmt->execute();
-        if ($resultats) {
-            header("location: liste.php");
-            
+        $stmt->bindParam(':id_age', $id_age, PDO::PARAM_INT); // Utilisation de PARAM_INT car il s'agit d'un identifiant (entier)
+        
+        $resultat = $stmt->execute();
+        if ($resultat) {
+            header("Location: liste.php"); // Utilisation de Location au lieu de location
             exit();
         } else {
             die("Erreur : Impossible d'insérer des données.");
-            
         }
     } catch (PDOException $e) {
         die("Erreur : Impossible d'insérer des données " . $e->getMessage());
