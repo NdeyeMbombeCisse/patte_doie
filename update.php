@@ -9,39 +9,39 @@ if(isset($_POST['soumetre'])){
     $nom = $_POST['nom'];
     $age = $_POST['age'];
     $sexe = $_POST['sexe'];
-    $situation = $_POST['situation'];
+    $situation_matrimonilae = $_POST['situation_matrimoniale'];
     $statut = $_POST['statut']; 
 
     // Récupérer l'ID à partir de la requête GET
     $id = $_GET['id'];
 
     // Appeler la méthode update avec les nouvelles valeurs
-    $membre->update($id, $prenom, $nom, $age, $sexe, $situation, $statut);
+    $membre->update($matricule, $prenom, $nom, $situation_matrimoniale, $sexe,  $statut,$id_age,);
     
     // Rediriger vers la page index
-    header("location: idex.php");
+    header("location: liste.php");
     exit(); // Terminer le script après la redirection
 }
 
 // Récupérer les données de l'étudiant à mettre à jour
-$id = $_GET['id'];
+$matricule = $_GET['matricule'];
 
-if(isset($id)) {
+if(isset($matricule)) {
     try {
         // Requête SQL pour sélectionner les données de l'étudiant à mettre à jour
-        $sql = "SELECT * FROM membre WHERE id = :id";
+        $sql = "SELECT * FROM membre WHERE matricule= :matricule";
         $stmt = $connexion->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':matricule', $matricule, PDO::PARAM_INT);
         
         if ($stmt->execute()) {
             // Récupération des données de l'étudiant
             $membre = $stmt->fetch(PDO::FETCH_ASSOC);
             $prenom = $membre['prenom'];
             $nom = $membre['nom'];
-            $age = $membre['age'];
             $sexe = $membre['sexe'];
-            $situation = $membre['situation'];
+            $situation = $membre['situation_matricule'];
             $statut = $membre['statut'];
+            $age = $membre['id_age'];
         } else {
             echo "Erreur lors de la récupération des données.";
         }
@@ -82,16 +82,15 @@ if(isset($id)) {
             <input type="text" name="nom" value="<?php echo $nom ?>">
         </div>
         <div class="remplir_formulaire">
-            <label for="age">Âge :</label>
-            <input type="number" name="age" value="<?php echo $age ?>">
-        </div>
-        <div class="remplir_formulaire">
             <label for="sexe">Sexe :</label>
-            <input type="text" name="sexe" value="<?php echo $sexe ?>">
+            <select name="sexe" id="sexe">
+                <option value="feminin" <?php if($sexe == "feminin") echo "selected"; ?>>feminin</option>
+                <option value="masculin" <?php if($sexe == "masculin") echo "selected"; ?>>masculin</option>
+            </select>
         </div>
         <div class="remplir_formulaire">
-            <label for="situation">Situation :</label>
-            <input type="text" name="situation" value="<?php echo $situation ?>">
+            <label for="situation_matrimoniale">Situation :</label>
+            <input type="text" name="situation_matrimonale" value="<?php echo $situation_matrimoniale ?>">
         </div>
         <div class="remplir_formulaire">
             <label for="statut">Statut :</label>
@@ -101,7 +100,15 @@ if(isset($id)) {
                 <option value="Badian Gokh" <?php if($statut == "Badian Gokh") echo "selected"; ?>>Badian Gokh</option>
             </select>
         </div>
-        <input type="submit" value="Soumettre" name="soumetre" id="bouton">
+        <div class="remplir_formulaire">
+            <label for="age">Âge :</label>
+            <select name="id_age" id="id_age">
+            <?php foreach ($tranches_age as $tranche_age): ?>
+                <option value="<?= $tranche_age->getid() ?>" ><?= $tranche_age->getage()?></option>
+            <?php endforeach; ?>
+        </div>
+
+       <div> <input type="submit" value="Soumettre" name="soumetre" id="bouton"></div>
     </fieldset> 
 </form>
 </body>
