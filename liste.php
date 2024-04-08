@@ -30,10 +30,11 @@ $resultats = $membre->read();
             <th scope="col">ID</th>
             <th scope="col">PRENOM</th>
             <th scope="col">NOM</th>
-            <th scope="col">AGE</th>
+            <th scope="col">tranche_age</th>
             <th scope="col">SEXE</th>
             <th scope="col">SITUATION</th>
             <th scope="col">STATUT</th>
+            <th scope="col">SITUATION_PROFESSIONNEL</th>
             <th scope="col">MODIFIER</th>
             <th scope="col">SUPPRIMER</th>
         </tr>
@@ -45,10 +46,10 @@ $resultats = $membre->read();
                 <td><?php echo $membre['id']; ?></td>
                 <td><?php echo $membre['prenom']; ?></td>
                 <td><?php echo $membre['nom']; ?></td>
-                <td><?php echo $membre['age']; ?></td>
+                <td><?php echo $membre['tranche_age']; ?></td>
                 <td><?php echo $membre['sexe']; ?></td>
                 <td><?php echo $membre['situation']; ?></td>
-                <td><?php echo $membre['statut']; ?></td>
+                <td><?php echo $membre['situation professionnelle']; ?></td>
                 <!-- Bouton pour éditer les données avec un lien vers updatedata.php -->
                 <td><a href="update.php?id=<?php echo $membre['id']; ?>">Edit</a></td>
                 <!-- Bouton pour supprimer les données avec un lien vers deletedata.php -->

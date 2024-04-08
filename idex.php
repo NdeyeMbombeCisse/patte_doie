@@ -5,80 +5,107 @@ require_once "config.php";
 if(isset($_POST['soumetre'])){
     $prenom=$_POST['prenom'];
     $nom=$_POST['nom'];
-    $age=$_POST['age'];
+    $tranche_age_id=$_POST['tranche_age'];
     $sexe=$_POST['sexe'];
     $situation=$_POST['situation'];
     $statut=$_POST['statut']; 
+    $id=$_POST['id'];
 
-    if($prenom!="" && $nom!="" && $age!="" && $sexe!="" && $situation!="" &&  $statut!=""){
-        $membre=new membre ($connexion,"ndeye","cisse",12,"feminin", "mariee", "mariee");
-        $membre->add($prenom,$nom,$age,$sexe, $situation, $statut);
+    $situation_id=$_POST['situation_id'];
+
+    if($prenom!="" && $nom!="" && $tranche_age_id!="" && $sexe!="" && $situation!="" && $statut!="" && $id!=""){
+        $membre=new membre ($connexion, "John", "Doe", $tranche_age_id, "Masculin", "Célibataire", "Chef de quartier",$id);
+
+        $membre->add($prenom,$nom,$tranche_age_id,$sexe, $situation, $statut, $id);
     }
- }
+}
 
+// Récupération de la liste des situations professionnel
+$id = $id->read();
+
+// Récupération de la liste des tranches d'âge
+$tranches_age = $tranche_age->read();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>membre patte d'oie</title>
+    <title>Ajouter un membre</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>
 <header>
     <nav>
-        <a href="idex.php">ADD MEMBRE</a>
-        <a href="liste.php">LIST_MEMBRE</a> 
+        <a href="index.php">Accueil</a>
+        <a href="liste.php">Liste des membres</a> 
     </nav>
-  </header> 
+</header> 
 
-  <h1>AJOUTER UN MEMBRE</h1>
+<h1>Ajouter un membre</h1>
 
 <form action="" method="post">
-   <fieldset> 
-   <div class= "remplir_formulaire">
-          <label for="prenom">quelle est le prenom du membre?</label>
-          <input type="text" name="prenom">
-          
-      </div>
-          
-      <div class="remplir_formulaire">
-          <label for="nom">quelle est le nom du membre?</label>
-          <input type="text" name="nom">
-      </div>
-      
-      <div class="remplir_formulaire">
-          <label for="age">Quelle est l'age du membre?</label>
-          <input type="number" name="age">
-      </div>
-      <div class="remplir_formulaire">
-          <label for="sexe">Quell est le sexe du membre</label>
-          <input type="text" name="sexe">
-      </div>
-
-      <div class="remplir_formulaire">
-          <label for="situation">quelle est la situation du membre?</label>
-          <input type="text" name="situation">
-      </div>
-
-      <div class="remplir_formulaire">
-          <label for="statut">quelle est le statut du membre?</label>
-          <select name="statut" id="statut">
-            <option value="Chef de quartier">Chef de quartier</option>
-            <option value=" civile"> civile</option>
-            <option value="badian gokh">badian gokh</option>
-          </select>
-      </div>
-      <div>
-      <input type="submit" value="Soumettre" name="soumetre" id="bouton">
-       
-
-       </fieldset> 
-   
-      
-      
-    
+    <fieldset> 
+        <div class="remplir_formulaire">
+            <label for="prenom">Prénom du membre :</label>
+            <input type="text" name="prenom">
+        </div>
+        <div class="remplir_formulaire">
+            <label for="nom">Nom du membre :</label>
+            <input type="text" name="nom">
+        </div>
+        <div class="remplir_formulaire">
+            <label for="tranche_age">Tranche d'âge :</label>
+            <select name="tranche_age" id="tranche_age">
+                <?php foreach ($tranches_age as $tranche_age) : ?>
+                    <option value="<?php echo $tranche_age['id']; ?>">
+                <option value="0-18">0-18</option>
+                <option value="18-30">18-30</option>
+                <option value="30-50">30-50</option>
+                <option value="+50">+50</option>
+                    
+                    <?php echo $tranche_age['contenu']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="remplir_formulaire">
+            <label for="sexe">Sexe du membre :</label>
+            <select name="sexe" id="sexe">
+                <option value="Masculin">Masculin</option>
+                <option value="Féminin">Féminin</option>
+            </select>
+        </div>
+        <div class="remplir_formulaire">
+            <label for="situation_matrimoniale">Situation matrimoniale :</label>
+            <select name="situation_matrimoniale" id="situation_matrimoniale">
+                <option value="Célibataire">Célibataire</option>
+                <option value="Marié(e)">Marié(e)</option>
+                <option value="Divorcé(e)">Divorcé(e)</option>
+                <option value="Veuf(ve)">Veuf(ve)</option>
+            </select>
+        </div>
+        <div class="remplir_formulaire">
+            <label for="statut">Statut du membre :</label>
+            <select name="statut" id="statut">
+                <option value="Chef de quartier">Chef de quartier</option>
+                <option value="Civile">Civile</option>
+                <option value="Badian Gokh">Badian Gokh</option>
+            </select>
+        </div>
+        <div class="remplir_formulaire">
+            <label for="situation_professionnel">situation_professionnel :</label>
+            <select name="situation_id" id="situation_id">
+                 <?php foreach ($id as $id) : ?>
+                <option value="chomeur">chomeur</option>
+                <option value="travailleur">travailleur</option>
+                <option value="retraite">retraite</option>
+                    <option value="<?php echo $id['id']; ?>"><?php echo $id['nom']; ?></option>
+                <?php endforeach; ?> 
+            </select>
+        </div>
+        <input type="submit" value="Soumettre" name="soumetre" id="bouton">
+    </fieldset> 
+</form>
 </body>
 </html>
