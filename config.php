@@ -5,14 +5,14 @@ include_once "membre.php";
 define("DB_SERVER", "localhost");
 define("USER_NAME", "root");
 define("DB_PASSWORD", "Mbombe@78400$");
-define("DB_NAME", "habitant");
+define("DB_NAME", "patte_doie");
 
 // connexion avec la base de données
 try {
     $connexion = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME, USER_NAME, DB_PASSWORD);
     // Configuration de PDO pour afficher les erreurs SQL
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $membre=new membre ($connexion,"ndeye","cisse",12,"feminin", "mariee", "mariee");
+    $membre=new membre ($connexion,"prenom","nom","age","sexe", "situation_matrimoniale", "statut","id_age");
    
    
 

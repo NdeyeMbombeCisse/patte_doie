@@ -3,15 +3,15 @@
 require_once "config.php";
 
 // Vérifier si l'ID du membre à supprimer est présent dans l'URL
-if(isset($_GET['id'])) {
+if(isset($_GET['matricule'])) {
     // Récupérer l'ID du membre à supprimer depuis l'URL
-    $id = $_GET['id'];
+    $matricule= $_GET['matricule'];
     
     // Appeler la méthode delete() pour supprimer le membre
-    $membre->delete($id);
+    $membre->delete($matricule);
 } else {
     // Rediriger vers la page index si l'ID n'est pas spécifié
-    header("location: index.php");
+    header("location: liste.php");
     exit(); // Arrêt du script après la redirection
 }
 
